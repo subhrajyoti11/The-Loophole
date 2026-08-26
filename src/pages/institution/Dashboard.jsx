@@ -37,21 +37,21 @@ export default function InstitutionDashboard() {
     <div className="space-y-8">
       
       {/* Top Banner / Welcome */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-blue-950/40 via-slate-900 to-indigo-950/40 border border-blue-500/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div className="p-6 sm:p-8 rounded-3xl bg-canvas-panel border border-primary-500/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-tactile">
         <div className="space-y-2">
           <div className="flex items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-mono font-bold">
+            <span className="px-2.5 py-0.5 rounded-full bg-primary-500/10 border border-primary-500/30 text-primary-300 text-xs font-mono font-bold">
               {institution?.code || 'NITR-IN'}
             </span>
             <span className="text-xs text-slate-400 font-mono">
               Accreditation: {institution?.accreditationNo || 'NIRF-2025-ENG-016'}
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
             {institution?.name || 'National Institute of Technology Rourkela'}
           </h1>
           <p className="text-xs text-slate-300">
-            Authorized Registrar: <span className="font-semibold text-slate-100">{user?.name || 'Prof. Rohan K. Sen'}</span> • PoA Validator Node Active
+            Authorized Registrar: <span className="font-semibold text-slate-100">{user?.name || 'Prof. Rohan K. Sen'}</span> • PoA Consensus Validator Active
           </p>
         </div>
 
@@ -67,53 +67,53 @@ export default function InstitutionDashboard() {
       {/* Metrics Row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         
-        <div className="p-5 rounded-2xl glass-panel border border-slate-800 space-y-2">
+        <div className="p-5 rounded-2xl bg-canvas-panel border border-slate-800 space-y-2 shadow-tactile">
           <div className="flex items-center justify-between text-slate-400">
             <span className="text-xs font-mono uppercase">Total Issued</span>
-            <Award className="w-4 h-4 text-blue-400" />
+            <Award className="w-4 h-4 text-primary-400" />
           </div>
           <p className="text-3xl font-bold font-mono text-white">{instCredentials.length}</p>
-          <span className="text-[11px] text-emerald-400 font-mono">100% on Blockchain</span>
+          <span className="text-[10px] text-emerald-400 font-mono">100% on Blockchain</span>
         </div>
 
-        <div className="p-5 rounded-2xl glass-panel border border-slate-800 space-y-2">
+        <div className="p-5 rounded-2xl bg-canvas-panel border border-slate-800 space-y-2 shadow-tactile">
           <div className="flex items-center justify-between text-slate-400">
             <span className="text-xs font-mono uppercase">Active Verified</span>
             <CheckCircle2 className="w-4 h-4 text-emerald-400" />
           </div>
           <p className="text-3xl font-bold font-mono text-emerald-400">{activeCount}</p>
-          <span className="text-[11px] text-slate-400 font-mono">Valid & In Good Standing</span>
+          <span className="text-[10px] text-slate-400 font-mono">Valid & In Good Standing</span>
         </div>
 
-        <div className="p-5 rounded-2xl glass-panel border border-slate-800 space-y-2">
+        <div className="p-5 rounded-2xl bg-canvas-panel border border-slate-800 space-y-2 shadow-tactile">
           <div className="flex items-center justify-between text-slate-400">
             <span className="text-xs font-mono uppercase">Revoked Degrees</span>
             <AlertOctagon className="w-4 h-4 text-amber-400" />
           </div>
           <p className="text-3xl font-bold font-mono text-amber-400">{revokedCount}</p>
-          <span className="text-[11px] text-amber-300/80 font-mono">Revocation Blocks Logged</span>
+          <span className="text-[10px] text-amber-300/80 font-mono">Revocation Blocks Logged</span>
         </div>
 
-        <div className="p-5 rounded-2xl glass-panel border border-slate-800 space-y-2">
+        <div className="p-5 rounded-2xl bg-canvas-panel border border-slate-800 space-y-2 shadow-tactile">
           <div className="flex items-center justify-between text-slate-400">
             <span className="text-xs font-mono uppercase">Global Block Height</span>
             <Layers className="w-4 h-4 text-indigo-400" />
           </div>
           <p className="text-3xl font-bold font-mono text-indigo-300">#{blockchain.length}</p>
-          <span className="text-[11px] text-emerald-400 font-mono">Synchronized with PoA</span>
+          <span className="text-[10px] text-emerald-400 font-mono">Synchronized with PoA</span>
         </div>
 
       </div>
 
       {/* Institution Cryptographic Identity Info Card */}
-      <div className="p-5 rounded-2xl glass-card border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="p-5 rounded-2xl bg-canvas-panel border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-tactile">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center">
-            <Key className="w-5 h-5" />
+          <div className="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center">
+            <Key className="w-4 h-4" />
           </div>
           <div>
             <h4 className="text-xs font-bold text-slate-200 uppercase tracking-wider font-mono">
-              Institutional Ed25519 Public Key
+              Institutional Signing Public Key (Ed25519)
             </h4>
             <p className="text-[11px] font-mono text-emerald-400 select-all truncate max-w-xl">
               {institution?.publicKey || '04a1b2c3d4e5f67890abcdef1234567890abcdef1234567890abcdef1234567890...'}
@@ -121,9 +121,9 @@ export default function InstitutionDashboard() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
+        <div className="flex items-center gap-2 text-[10px] font-mono text-slate-400">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          <span>SIGNING KEY VALIDATED</span>
+          <span>SIGNING AUTHORITY ACTIVE</span>
         </div>
       </div>
 
@@ -131,13 +131,13 @@ export default function InstitutionDashboard() {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-bold text-white">Recently Issued Credentials</h2>
-            <p className="text-xs text-slate-400">Digitally signed and mined onto the ledger</p>
+            <h2 className="text-lg font-bold text-white tracking-tight">Recently Issued Credentials</h2>
+            <p className="text-xs text-slate-400">Digitally signed and sealed onto the consensus ledger</p>
           </div>
 
           <Link
             to="/institution/credentials"
-            className="text-xs font-semibold text-blue-400 hover:text-blue-300 flex items-center gap-1"
+            className="text-xs font-semibold text-primary-400 hover:text-primary-300 flex items-center gap-1"
           >
             <span>View all ({instCredentials.length})</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -152,11 +152,11 @@ export default function InstitutionDashboard() {
       </div>
 
       {/* Recent Verification Logs Preview */}
-      <div className="p-6 rounded-2xl glass-panel border border-slate-800 space-y-4">
+      <div className="p-6 rounded-2xl bg-canvas-panel border border-slate-800 space-y-4 shadow-tactile">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-bold text-slate-200 uppercase tracking-wider font-mono flex items-center gap-2">
-              <FileCheck2 className="w-4 h-4 text-blue-400" />
+            <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider font-mono flex items-center gap-2">
+              <FileCheck2 className="w-4 h-4 text-primary-400" />
               Recent Third-Party Verification Queries
             </h3>
             <p className="text-xs text-slate-400 mt-0.5">Real-time audit log of recruiters & background check firms</p>
@@ -164,7 +164,7 @@ export default function InstitutionDashboard() {
 
           <Link
             to="/institution/logs"
-            className="text-xs font-semibold text-blue-400 hover:text-blue-300 flex items-center gap-1"
+            className="text-xs font-semibold text-primary-400 hover:text-primary-300 flex items-center gap-1"
           >
             <span>Full Audit Trail</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -205,7 +205,7 @@ export default function InstitutionDashboard() {
                       {log.result}
                     </span>
                   </td>
-                  <td className="py-2.5 px-3 text-blue-400">
+                  <td className="py-2.5 px-3 text-primary-300">
                     {truncateHash(log.hashQueried, 6, 6)}
                   </td>
                 </tr>
@@ -218,3 +218,4 @@ export default function InstitutionDashboard() {
     </div>
   );
 }
+

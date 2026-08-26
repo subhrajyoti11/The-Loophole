@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { ShieldCheck, Award, ArrowLeft, CheckCircle2, Layers, QrCode as QrIcon, ExternalLink, Printer } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useCredentials } from '../../context/CredentialContext';
+import { useToast } from '../../context/ToastContext';
 import CredentialForm from '../../components/credential/CredentialForm';
 import Modal from '../../components/common/Modal';
 import QRCode from '../../components/verification/QRCode';
@@ -12,6 +13,7 @@ import { truncateHash } from '../../utils/generateHash';
 export default function IssueCredential() {
   const { institution } = useAuth();
   const { issueCredential } = useCredentials();
+  const { addToast } = useToast();
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -31,8 +33,9 @@ export default function IssueCredential() {
       const result = await issueCredential(formData, activeInst);
       setMintResult(result);
       setShowSuccessModal(true);
+      addToast(`Block #${result.block.index} successfully minted to ledger!`, 'success');
     } catch (err) {
-      alert('Error issuing credential: ' + err.message);
+      addToast('Error issuing credential: ' + err.message, 'error');
     } finally {
       setIsLoading(false);
     }
@@ -52,10 +55,10 @@ export default function IssueCredential() {
             to="/institution/dashboard"
             className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 transition-colors mb-2"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-3.5 h-3.5" />
             <span>Back to Dashboard</span>
           </Link>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
             Issue Tamper-Proof Academic Credential
           </h1>
           <p className="text-xs text-slate-400 mt-1">
@@ -85,15 +88,15 @@ export default function IssueCredential() {
         >
           <div className="space-y-5 text-center">
             
-            <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center mx-auto">
-              <CheckCircle2 className="w-8 h-8" />
+            <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center mx-auto shadow-tactile">
+              <CheckCircle2 className="w-7 h-7" />
             </div>
 
             <div className="space-y-1">
-              <h3 className="text-lg font-bold text-white">
+              <h3 className="text-lg font-bold text-white tracking-tight">
                 {mintResult.credential.studentName}
               </h3>
-              <p className="text-xs text-blue-400 font-mono font-semibold">
+              <p className="text-xs text-primary-300 font-mono font-semibold">
                 Certificate ID: {mintResult.credential.id}
               </p>
               <p className="text-xs text-slate-300">
@@ -103,15 +106,17 @@ export default function IssueCredential() {
 
             {/* QR Code Container */}
             <div className="py-2 flex justify-center">
-              <QRCode
-                value={verificationUrl}
-                size={160}
-                showDownload={true}
-              />
+              <div className="p-3 bg-white rounded-2xl border border-slate-700 shadow-md">
+                <QRCode
+                  value={verificationUrl}
+                  size={150}
+                  showDownload={true}
+                />
+              </div>
             </div>
 
             {/* Block Receipt */}
-            <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 text-left text-xs font-mono space-y-1">
+            <div className="p-3 bg-canvas-subtle rounded-xl border border-slate-800 text-left text-xs font-mono space-y-1">
               <div className="flex justify-between text-slate-400">
                 <span>Block Number:</span>
                 <span className="text-emerald-400 font-bold">#{mintResult.block.index}</span>
@@ -162,3 +167,4 @@ export default function IssueCredential() {
     </div>
   );
 }
+

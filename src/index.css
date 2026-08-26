@@ -4,19 +4,37 @@
 
 @layer base {
   body {
-    @apply bg-slate-950 text-slate-100 font-sans min-h-screen overflow-x-hidden;
-    background: #0b0f19;
+    @apply bg-canvas text-slate-100 font-sans min-h-screen overflow-x-hidden antialiased selection:bg-primary-600 selection:text-white;
+    background-color: #06090e;
+    background-image: 
+      radial-gradient(ellipse at 50% -10%, rgba(99, 102, 241, 0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 90% 80%, rgba(6, 182, 212, 0.04) 0%, transparent 50%),
+      linear-gradient(to bottom, #06090e, #080c14);
+    background-attachment: fixed;
   }
 }
 
-/* Custom lightweight scrollbar */
+/* Mathematical Grid & Micro Dot Textures */
+.bg-grid-pattern {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+.bg-dot-pattern {
+  background-size: 20px 20px;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+}
+
+/* Custom Precision Scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #090d16;
+  background: #06090e;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -28,40 +46,132 @@
   background: #334155;
 }
 
-/* Crisp Lightweight Panels */
-.glass-panel {
-  background: #0f172a;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+/* Layered Surfaces & Tactile Panels */
+.surface-canvas {
+  background-color: #06090e;
 }
 
-.glass-card {
-  background: #1e293b;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+.surface-card {
+  background-color: #0c111d;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
-.glass-input {
-  background: #090d16;
+.surface-card-hover {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.surface-card-hover:hover {
+  background-color: #0f1728;
+  border-color: rgba(99, 102, 241, 0.35);
+  box-shadow: 0 8px 30px -4px rgba(0, 0, 0, 0.6), 0 0 15px -3px rgba(99, 102, 241, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.surface-raised {
+  background-color: #121826;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.surface-overlay {
+  background-color: #172033;
   border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-.glass-input:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+/* Form Inputs */
+.tactile-input {
+  background-color: #090d15;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #f1f5f9;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+  transition: all 0.15s ease-in-out;
 }
 
-/* Certificate Styles */
-.certificate-frame {
-  background: #0b1120;
-  border: 4px double #d97706;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-  position: relative;
+.tactile-input:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25), inset 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-.certificate-border-inner {
-  border: 1px solid rgba(245, 158, 11, 0.4);
+.tactile-input::placeholder {
+  color: #475569;
 }
 
-/* Printing styling */
+/* Keyboard Keycap Badge */
+.kbd-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.15rem 0.4rem;
+  font-size: 0.7rem;
+  font-family: var(--font-mono, monospace);
+  font-weight: 600;
+  color: #94a3b8;
+  background: #1a2234;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.3);
+}
+
+/* High-Security Certificate Guilloche Patterns */
+.guilloche-border {
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(217, 119, 6, 0.12) 0px,
+    rgba(217, 119, 6, 0.12) 2px,
+    transparent 2px,
+    transparent 6px
+  ), repeating-linear-gradient(
+    -45deg,
+    rgba(217, 119, 6, 0.12) 0px,
+    rgba(217, 119, 6, 0.12) 2px,
+    transparent 2px,
+    transparent 6px
+  );
+}
+
+.security-rosette {
+  background-image: radial-gradient(circle at center, rgba(217, 119, 6, 0.08) 0%, transparent 70%);
+}
+
+.certificate-dark {
+  background: #090e18;
+  border: 3px double #d97706;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 30px rgba(217, 119, 6, 0.15);
+}
+
+.certificate-parchment {
+  background: #fcfbfa;
+  color: #1c1917;
+  border: 4px double #854d0e;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), inset 0 0 80px rgba(217, 119, 6, 0.08);
+}
+
+/* Security Foil Gradient */
+.gold-foil {
+  background: linear-gradient(135deg, #fef08a 0%, #d97706 40%, #b45309 70%, #fef08a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-foil-bg {
+  background: linear-gradient(135deg, #fef08a 0%, #d97706 40%, #b45309 70%, #fde047 100%);
+}
+
+/* Hologram Seal Effect */
+.hologram-seal {
+  background: linear-gradient(135deg, #38bdf8 0%, #c084fc 35%, #34d399 70%, #f472b6 100%);
+  background-size: 200% 200%;
+  animation: hologramShift 8s ease infinite;
+}
+
+@keyframes hologramShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Printing styles */
 @media print {
   body * {
     visibility: hidden;
@@ -75,10 +185,10 @@
     top: 0;
     width: 100%;
     margin: 0;
-    padding: 20px;
+    padding: 24px;
     background: #ffffff !important;
-    color: #000000 !important;
-    border: 4px double #b45309 !important;
+    color: #111827 !important;
+    border: 4px double #854d0e !important;
   }
   .no-print {
     display: none !important;

@@ -29,7 +29,7 @@ export default function CredentialForm({
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [formErrors, setFormErrors] = useState({});
 
-  // Recalculate hash live as user types!
+  // Recalculate hash live as user types
   useEffect(() => {
     const degreeFinal = isCustomDegree ? formData.customDegree : formData.degree;
     const tempPayload = {
@@ -88,7 +88,7 @@ export default function CredentialForm({
 
   const previewCredential = {
     id: 'CRD-SAMPLE-PENDING',
-    studentName: formData.studentName || 'Sample Student',
+    studentName: formData.studentName || 'Sample Candidate',
     studentId: formData.studentId || '2025-CS-000',
     studentEmail: formData.studentEmail,
     degree: isCustomDegree ? formData.customDegree : formData.degree,
@@ -107,19 +107,19 @@ export default function CredentialForm({
     <>
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Section 1: Student Information */}
-        <div className="p-6 rounded-2xl glass-panel border border-slate-800 space-y-4">
-          <div className="flex items-center gap-2 pb-2 border-b border-slate-800">
-            <div className="w-7 h-7 rounded-lg bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 font-bold text-xs">
-              1
+        <div className="p-6 rounded-2xl bg-canvas-panel border border-slate-800 space-y-4 shadow-tactile">
+          <div className="flex items-center gap-2.5 pb-3 border-b border-slate-800">
+            <div className="w-6 h-6 rounded-lg bg-primary-600/20 border border-primary-500/30 flex items-center justify-center text-primary-400 font-bold text-xs font-mono">
+              01
             </div>
-            <h3 className="text-sm font-bold text-slate-100 uppercase tracking-wider">
-              Student Identification Details
+            <h3 className="text-xs font-bold text-slate-200 uppercase font-mono tracking-wider">
+              Student Identification Profile
             </h3>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+              <label className="block text-xs font-medium text-slate-300 mb-1.5">
                 Full Name of Candidate <span className="text-rose-400">*</span>
               </label>
               <input
@@ -128,48 +128,48 @@ export default function CredentialForm({
                 value={formData.studentName}
                 onChange={handleChange}
                 placeholder="e.g. Aarav Mehta"
-                className="w-full px-4 py-2.5 rounded-xl glass-input text-slate-100 text-sm focus:outline-none transition-all placeholder:text-slate-500"
+                className="w-full px-3.5 py-2.5 rounded-xl tactile-input text-slate-100 text-xs font-medium focus:outline-none transition-all placeholder:text-slate-600"
               />
               {formErrors.studentName && (
-                <p className="text-xs text-rose-400 mt-1 flex items-center gap-1">
+                <p className="text-[11px] text-rose-400 mt-1 flex items-center gap-1 font-mono">
                   <AlertCircle className="w-3 h-3" /> {formErrors.studentName}
                 </p>
               )}
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                Student ID / University Roll No <span className="text-rose-400">*</span>
+              <label className="block text-xs font-medium text-slate-300 mb-1.5">
+                University Roll No / Permanent Student ID <span className="text-rose-400">*</span>
               </label>
               <input
                 type="text"
                 name="studentId"
                 value={formData.studentId}
                 onChange={handleChange}
-                placeholder="e.g. 210050114"
-                className="w-full px-4 py-2.5 rounded-xl glass-input text-slate-100 text-sm focus:outline-none transition-all placeholder:text-slate-500 font-mono"
+                placeholder="e.g. 121CS0412"
+                className="w-full px-3.5 py-2.5 rounded-xl tactile-input text-slate-100 text-xs font-mono focus:outline-none transition-all placeholder:text-slate-600"
               />
               {formErrors.studentId && (
-                <p className="text-xs text-rose-400 mt-1 flex items-center gap-1">
+                <p className="text-[11px] text-rose-400 mt-1 flex items-center gap-1 font-mono">
                   <AlertCircle className="w-3 h-3" /> {formErrors.studentId}
                 </p>
               )}
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                Student Official / Alumni Email <span className="text-rose-400">*</span>
+              <label className="block text-xs font-medium text-slate-300 mb-1.5">
+                Official Institutional / Alumni Email <span className="text-rose-400">*</span>
               </label>
               <input
                 type="email"
                 name="studentEmail"
                 value={formData.studentEmail}
                 onChange={handleChange}
-                placeholder="e.g. aarav.mehta@alumni.iitb.ac.in"
-                className="w-full px-4 py-2.5 rounded-xl glass-input text-slate-100 text-sm focus:outline-none transition-all placeholder:text-slate-500"
+                placeholder="e.g. aarav.mehta@alumni.nitrkl.ac.in"
+                className="w-full px-3.5 py-2.5 rounded-xl tactile-input text-slate-100 text-xs focus:outline-none transition-all placeholder:text-slate-600"
               />
               {formErrors.studentEmail && (
-                <p className="text-xs text-rose-400 mt-1 flex items-center gap-1">
+                <p className="text-[11px] text-rose-400 mt-1 flex items-center gap-1 font-mono">
                   <AlertCircle className="w-3 h-3" /> {formErrors.studentEmail}
                 </p>
               )}
@@ -178,28 +178,28 @@ export default function CredentialForm({
         </div>
 
         {/* Section 2: Academic Program & Degree */}
-        <div className="p-6 rounded-2xl glass-panel border border-slate-800 space-y-4">
-          <div className="flex items-center gap-2 pb-2 border-b border-slate-800">
-            <div className="w-7 h-7 rounded-lg bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400 font-bold text-xs">
-              2
+        <div className="p-6 rounded-2xl bg-canvas-panel border border-slate-800 space-y-4 shadow-tactile">
+          <div className="flex items-center gap-2.5 pb-3 border-b border-slate-800">
+            <div className="w-6 h-6 rounded-lg bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400 font-bold text-xs font-mono">
+              02
             </div>
-            <h3 className="text-sm font-bold text-slate-100 uppercase tracking-wider">
-              Academic Program & Performance
+            <h3 className="text-xs font-bold text-slate-200 uppercase font-mono tracking-wider">
+              Conferred Degree & Senate Evaluation
             </h3>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="md:col-span-2">
               <div className="flex items-center justify-between mb-1.5">
-                <label className="text-xs font-semibold text-slate-300">
-                  Degree / Program Awarded <span className="text-rose-400">*</span>
+                <label className="text-xs font-medium text-slate-300">
+                  Degree / Program Title <span className="text-rose-400">*</span>
                 </label>
                 <button
                   type="button"
                   onClick={() => setIsCustomDegree(!isCustomDegree)}
-                  className="text-xs text-blue-400 hover:text-blue-300 underline"
+                  className="text-xs text-primary-400 hover:text-primary-300 underline cursor-pointer"
                 >
-                  {isCustomDegree ? 'Select from standard degrees' : '+ Enter custom degree title'}
+                  {isCustomDegree ? 'Select from standard curriculum' : '+ Enter custom degree title'}
                 </button>
               </div>
 
@@ -210,14 +210,14 @@ export default function CredentialForm({
                   value={formData.customDegree}
                   onChange={handleChange}
                   placeholder="e.g. Dual Degree B.Tech + M.Tech in Artificial Intelligence"
-                  className="w-full px-4 py-2.5 rounded-xl glass-input text-slate-100 text-sm focus:outline-none transition-all placeholder:text-slate-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl tactile-input text-slate-100 text-xs focus:outline-none transition-all placeholder:text-slate-600"
                 />
               ) : (
                 <select
                   name="degree"
                   value={formData.degree}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-slate-100 text-sm focus:outline-none transition-all"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-canvas-subtle border border-slate-700/80 text-slate-100 text-xs focus:outline-none transition-all cursor-pointer"
                 >
                   {SAMPLE_DEGREES.map((d) => (
                     <option key={d} value={d} className="bg-slate-900 text-slate-100">
@@ -229,8 +229,8 @@ export default function CredentialForm({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                Branch / Specialization / Major
+              <label className="block text-xs font-medium text-slate-300 mb-1.5">
+                Branch / Specialization Discipline
               </label>
               <input
                 type="text"
@@ -238,12 +238,12 @@ export default function CredentialForm({
                 value={formData.major}
                 onChange={handleChange}
                 placeholder="e.g. Computer Science and Engineering"
-                className="w-full px-4 py-2.5 rounded-xl glass-input text-slate-100 text-sm focus:outline-none transition-all placeholder:text-slate-500"
+                className="w-full px-3.5 py-2.5 rounded-xl tactile-input text-slate-100 text-xs focus:outline-none transition-all placeholder:text-slate-600"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+              <label className="block text-xs font-medium text-slate-300 mb-1.5">
                 Cumulative GPA (CGPA out of 10.0) <span className="text-rose-400">*</span>
               </label>
               <input
@@ -252,24 +252,24 @@ export default function CredentialForm({
                 value={formData.cgpa}
                 onChange={handleChange}
                 placeholder="e.g. 9.42"
-                className="w-full px-4 py-2.5 rounded-xl glass-input text-slate-100 text-sm focus:outline-none transition-all font-mono placeholder:text-slate-500"
+                className="w-full px-3.5 py-2.5 rounded-xl tactile-input text-slate-100 text-xs font-mono font-bold focus:outline-none transition-all placeholder:text-slate-600"
               />
               {formErrors.cgpa && (
-                <p className="text-xs text-rose-400 mt-1 flex items-center gap-1">
+                <p className="text-[11px] text-rose-400 mt-1 flex items-center gap-1 font-mono">
                   <AlertCircle className="w-3 h-3" /> {formErrors.cgpa}
                 </p>
               )}
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                Academic Classification / Honours
+              <label className="block text-xs font-medium text-slate-300 mb-1.5">
+                Senate Honour Classification
               </label>
               <select
                 name="grade"
                 value={formData.grade}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-slate-100 text-sm focus:outline-none transition-all"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-canvas-subtle border border-slate-700/80 text-slate-100 text-xs focus:outline-none transition-all cursor-pointer"
               >
                 <option value="Distinction / First Class with Honours">Distinction / First Class with Honours</option>
                 <option value="First Class with Distinction">First Class with Distinction</option>
@@ -280,7 +280,7 @@ export default function CredentialForm({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+              <label className="block text-xs font-medium text-slate-300 mb-1.5">
                 Conferment / Issue Date <span className="text-rose-400">*</span>
               </label>
               <input
@@ -288,28 +288,28 @@ export default function CredentialForm({
                 name="issueDate"
                 value={formData.issueDate}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-slate-100 text-sm focus:outline-none transition-all font-mono"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-canvas-subtle border border-slate-700/80 text-slate-100 text-xs focus:outline-none transition-all font-mono"
               />
             </div>
           </div>
         </div>
 
         {/* Section 3: Live Cryptographic Stamping Preview */}
-        <div className="p-6 rounded-2xl bg-gradient-to-br from-blue-950/40 via-slate-900/90 to-indigo-950/40 border border-blue-500/30 space-y-3">
+        <div className="p-6 rounded-2xl bg-canvas-panel border border-primary-500/30 space-y-3 shadow-tactile">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Cpu className="w-5 h-5 text-blue-400 animate-pulse" />
-              <h4 className="text-xs font-bold text-blue-300 uppercase tracking-wider">
-                Deterministic SHA-256 Digest (Live Calculation)
+              <Cpu className="w-4 h-4 text-primary-400 animate-pulse" />
+              <h4 className="text-xs font-bold text-primary-300 uppercase font-mono tracking-wider">
+                Live SHA-256 Payload Digest (Real-Time Computation)
               </h4>
             </div>
             <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-              SHA-256 Canonical
+              Deterministic 256-bit
             </span>
           </div>
 
           <p className="text-xs text-slate-400">
-            This 256-bit cryptographic digest changes instantaneously with every keystroke and will be permanently sealed into the next block of the ledger.
+            This canonical hash updates instantaneously with every keystroke and will be permanently sealed into the next block header.
           </p>
 
           <HashDisplay hash={calculatedHash} label="" truncate={false} highlight={true} />
@@ -323,7 +323,7 @@ export default function CredentialForm({
             icon={Eye}
             onClick={() => setShowPreviewModal(true)}
           >
-            Preview Certificate Template
+            Preview Certificate Design
           </Button>
 
           <div className="flex items-center gap-3">
@@ -334,7 +334,7 @@ export default function CredentialForm({
               icon={ShieldCheck}
               isLoading={isLoading}
             >
-              Sign & Mint to Blockchain Ledger
+              Sign & Mint to PoA Ledger
             </Button>
           </div>
         </div>
@@ -356,3 +356,4 @@ export default function CredentialForm({
     </>
   );
 }
+

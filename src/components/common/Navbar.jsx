@@ -4,45 +4,42 @@ import {
   ShieldCheck, 
   Layers, 
   Search, 
-  Cpu, 
-  UserCheck, 
   RotateCcw, 
   ChevronDown, 
-  ExternalLink,
   Sparkles,
   School,
-  Building2,
-  Lock
+  Building2
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useCredentials } from '../../context/CredentialContext';
+import { useToast } from '../../context/ToastContext';
 import { USER_ROLES } from '../../utils/constants';
 
 export default function Navbar() {
   const { user, switchRole, isInstitution, isAdmin, isVerifier } = useAuth();
   const { resetAllData } = useCredentials();
+  const { addToast } = useToast();
   const location = useLocation();
   const navigate = useNavigate();
   const [roleMenuOpen, setRoleMenuOpen] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
 
   const handleReset = async () => {
-    if (window.confirm('Reset all blockchain blocks & credentials to pristine demo state?')) {
-      setIsResetting(true);
-      await resetAllData();
-      setIsResetting(false);
-      navigate('/');
-    }
+    setIsResetting(true);
+    await resetAllData();
+    setIsResetting(false);
+    if (addToast) addToast('Blockchain ledger & sample credentials reset to initial state', 'info');
+    navigate('/');
   };
 
   const navLinks = [
     { name: 'Public Verify', path: '/verify', icon: Search },
-    { name: 'Tamper Demo', path: '/tamper-demo', icon: Sparkles, badge: 'Live Test' },
-    { name: 'Blockchain Explorer', path: '/admin/ledger', icon: Layers },
+    { name: 'Tamper Demo', path: '/tamper-demo', icon: Sparkles, badge: 'Live Lab' },
+    { name: 'Block Explorer', path: '/admin/ledger', icon: Layers },
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full glass-panel border-b border-slate-800/80">
+    <header className="sticky top-0 z-40 w-full bg-slate-950/80 backdrop-blur-md border-b border-slate-800/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           
@@ -119,7 +116,7 @@ export default function Navbar() {
               onClick={handleReset}
               disabled={isResetting}
               title="Reset Demo Data (Blockchain & Credentials)"
-              className="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs text-slate-400 hover:text-slate-200 bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition-colors"
+              className="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs text-slate-400 hover:text-slate-200 bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition-colors cursor-pointer"
             >
               <RotateCcw className={`w-3.5 h-3.5 ${isResetting ? 'animate-spin' : ''}`} />
               <span>Reset Demo</span>
@@ -129,7 +126,7 @@ export default function Navbar() {
             <div className="relative">
               <button
                 onClick={() => setRoleMenuOpen(!roleMenuOpen)}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700/80 hover:border-slate-600 text-xs text-slate-200 transition-all shadow-sm"
+                className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700/80 hover:border-slate-600 text-xs text-slate-200 transition-all shadow-sm cursor-pointer"
               >
                 <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                 <div className="flex flex-col text-left">
@@ -146,18 +143,18 @@ export default function Navbar() {
               {/* Role Menu */}
               {roleMenuOpen && (
                 <div 
-                  className="absolute right-0 mt-2 w-72 rounded-2xl glass-panel border border-slate-700 shadow-2xl p-2 z-50 animate-in fade-in zoom-in-95 duration-100"
+                  className="absolute right-0 mt-2 w-72 rounded-2xl bg-slate-900 border border-slate-700 shadow-2xl p-2 z-50 animate-in fade-in zoom-in-95 duration-100"
                   onClick={() => setRoleMenuOpen(false)}
                 >
                   <div className="px-3 py-2 border-b border-slate-800">
-                    <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Demo User Roles</p>
+                    <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider font-mono">Demo User Roles</p>
                     <p className="text-xs text-slate-300">Click to preview features as different actors</p>
                   </div>
                   <div className="space-y-1 mt-1">
                     <button
                       onClick={() => { switchRole(USER_ROLES.INSTITUTION); navigate('/institution/dashboard'); }}
-                      className={`w-full flex items-start gap-3 p-2.5 rounded-xl text-left transition-colors ${
-                        isInstitution ? 'bg-blue-600/20 border border-blue-500/30' : 'hover:bg-slate-800/80'
+                      className={`w-full flex items-start gap-3 p-2.5 rounded-xl text-left transition-colors cursor-pointer ${
+                        isInstitution ? 'bg-blue-600/20 border border-blue-500/30' : 'hover:bg-slate-800/80 text-slate-300'
                       }`}
                     >
                       <School className="w-4 h-4 text-blue-400 mt-0.5" />
@@ -169,8 +166,8 @@ export default function Navbar() {
 
                     <button
                       onClick={() => { switchRole(USER_ROLES.ADMIN); navigate('/admin/dashboard'); }}
-                      className={`w-full flex items-start gap-3 p-2.5 rounded-xl text-left transition-colors ${
-                        isAdmin ? 'bg-indigo-600/20 border border-indigo-500/30' : 'hover:bg-slate-800/80'
+                      className={`w-full flex items-start gap-3 p-2.5 rounded-xl text-left transition-colors cursor-pointer ${
+                        isAdmin ? 'bg-indigo-600/20 border border-indigo-500/30' : 'hover:bg-slate-800/80 text-slate-300'
                       }`}
                     >
                       <Layers className="w-4 h-4 text-indigo-400 mt-0.5" />
@@ -182,8 +179,8 @@ export default function Navbar() {
 
                     <button
                       onClick={() => { switchRole(USER_ROLES.VERIFIER); navigate('/verify'); }}
-                      className={`w-full flex items-start gap-3 p-2.5 rounded-xl text-left transition-colors ${
-                        isVerifier ? 'bg-emerald-600/20 border border-emerald-500/30' : 'hover:bg-slate-800/80'
+                      className={`w-full flex items-start gap-3 p-2.5 rounded-xl text-left transition-colors cursor-pointer ${
+                        isVerifier ? 'bg-emerald-600/20 border border-emerald-500/30' : 'hover:bg-slate-800/80 text-slate-300'
                       }`}
                     >
                       <Search className="w-4 h-4 text-emerald-400 mt-0.5" />
@@ -203,3 +200,6 @@ export default function Navbar() {
     </header>
   );
 }
+
+
+

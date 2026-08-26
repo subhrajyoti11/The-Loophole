@@ -24,20 +24,20 @@ export default function CredentialCard({
   return (
     <>
       <div
-        className={`rounded-2xl glass-panel p-5 border transition-all duration-200 hover:shadow-xl hover:border-slate-700 flex flex-col justify-between ${
+        className={`rounded-2xl bg-canvas-panel p-5 border transition-all duration-200 hover:shadow-tactile-hover flex flex-col justify-between ${
           isRevoked
-            ? 'border-amber-500/30 bg-amber-950/10'
-            : 'border-slate-800 hover:border-blue-500/40'
+            ? 'border-amber-500/40 bg-amber-950/10'
+            : 'border-slate-800 hover:border-slate-700'
         }`}
       >
         <div>
           {/* Card Header: Status & ID */}
           <div className="flex items-start justify-between gap-3 pb-3 border-b border-slate-800/80">
             <div>
-              <span className="text-[10px] font-mono font-bold text-blue-400 uppercase tracking-wider block">
+              <span className="text-[10px] font-mono font-bold text-primary-400 uppercase tracking-wider block">
                 {credential.id}
               </span>
-              <h3 className="text-base font-bold text-slate-100 mt-0.5 hover:text-blue-300 transition-colors">
+              <h3 className="text-base font-bold text-slate-100 mt-0.5 hover:text-primary-300 transition-colors">
                 {credential.studentName}
               </h3>
             </div>
@@ -53,7 +53,7 @@ export default function CredentialCard({
 
             {credential.major && (
               <p className="text-[11px] text-slate-400 pl-6 truncate">
-                Major: <span className="text-slate-300">{credential.major}</span>
+                Major: <span className="text-slate-300 font-medium">{credential.major}</span>
               </p>
             )}
 
@@ -79,7 +79,7 @@ export default function CredentialCard({
           <div className="mt-4">
             <HashDisplay
               hash={credential.hash}
-              label="On-Chain Hash"
+              label="On-Chain Payload Digest"
               truncate={true}
               className="scale-95 origin-left"
             />
@@ -93,9 +93,9 @@ export default function CredentialCard({
               type="button"
               onClick={() => setShowQRModal(true)}
               title="View & Download QR Code"
-              className="p-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 transition-colors"
+              className="p-2 rounded-xl bg-canvas-raised hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/80 transition-colors cursor-pointer shadow-tactile"
             >
-              <QrIcon className="w-4 h-4 text-blue-400" />
+              <QrIcon className="w-4 h-4 text-primary-400" />
             </button>
             <Link
               to={`/tamper-demo?id=${credential.id}`}
@@ -109,14 +109,14 @@ export default function CredentialCard({
           <div className="flex items-center gap-2">
             <Link
               to={`/verify/${credential.hash || credential.id}`}
-              className="inline-flex items-center gap-1 text-xs font-semibold text-blue-400 hover:text-blue-300 px-2 py-1 rounded-lg hover:bg-blue-500/10 transition-colors"
+              className="inline-flex items-center gap-1 text-xs font-semibold text-primary-400 hover:text-primary-300 px-2.5 py-1.5 rounded-lg hover:bg-primary-500/10 transition-colors"
             >
               <ShieldCheck className="w-3.5 h-3.5" />
               <span>Verify</span>
             </Link>
             <Link
               to={`/institution/credentials/${credential.id}`}
-              className="inline-flex items-center gap-1 text-xs font-semibold text-slate-200 bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-xl border border-slate-700 transition-colors"
+              className="inline-flex items-center gap-1 text-xs font-semibold text-slate-200 bg-canvas-raised hover:bg-canvas-highlight px-3 py-1.5 rounded-xl border border-slate-700/80 transition-colors shadow-tactile"
             >
               <Eye className="w-3.5 h-3.5" />
               <span>Details</span>
@@ -134,12 +134,14 @@ export default function CredentialCard({
         maxWidth="max-w-md"
       >
         <div className="flex flex-col items-center text-center space-y-4">
-          <QRCode value={verificationUrl} size={220} showDownload={true} />
+          <div className="p-3 bg-white rounded-2xl border border-slate-700 shadow-md">
+            <QRCode value={verificationUrl} size={200} showDownload={true} />
+          </div>
 
-          <div className="w-full text-left bg-slate-900/90 p-3 rounded-xl border border-slate-800 text-xs font-mono space-y-1">
+          <div className="w-full text-left bg-canvas-subtle p-3 rounded-xl border border-slate-800 text-xs font-mono space-y-1">
             <div className="text-slate-400 truncate">
               <span className="text-slate-500">Target URL: </span>
-              <span className="text-blue-400">{verificationUrl}</span>
+              <span className="text-primary-300">{verificationUrl}</span>
             </div>
             <div className="text-slate-400 truncate">
               <span className="text-slate-500">Payload Hash: </span>
@@ -151,3 +153,4 @@ export default function CredentialCard({
     </>
   );
 }
+

@@ -1,5 +1,5 @@
 # VeriChain — Blockchain-Based Tamper-Proof Academic Credential Verification
-### Smart India Hackathon (PS-03) | Software • Blockchain & Cybersecurity
+### Enterprise Cryptographic Ledger • SHA-256 Permissioned Hash-Chain Architecture
 
 VeriChain is a single-node permissioned SHA-256 hash-chain blockchain platform where universities issue digitally signed, immutable credentials and recruiters/employers can instantly validate authenticity via QR code or cryptographic hash in under 15ms.
 

@@ -39,7 +39,7 @@ export default function Credentials() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">Issued Credentials</h1>
+          <h1 className="text-2xl font-bold text-white tracking-tight">Issued Credentials</h1>
           <p className="text-xs text-slate-400 mt-0.5">
             Immutable registry of certificates minted on the blockchain ledger
           </p>
@@ -53,7 +53,7 @@ export default function Credentials() {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="p-4 rounded-2xl glass-panel border border-slate-800 flex flex-col sm:flex-row gap-3 items-center justify-between">
+      <div className="p-4 rounded-2xl bg-canvas-panel border border-slate-800 flex flex-col sm:flex-row gap-3 items-center justify-between shadow-tactile">
         
         {/* Search Input */}
         <div className="relative w-full sm:w-80">
@@ -63,19 +63,19 @@ export default function Credentials() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search student, roll no, degree..."
-            className="w-full pl-10 pr-4 py-2 rounded-xl glass-input text-xs text-slate-100 placeholder:text-slate-500 focus:outline-none"
+            className="w-full pl-10 pr-4 py-2 rounded-xl tactile-input text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none"
           />
         </div>
 
         {/* Status Filters */}
-        <div className="flex items-center gap-1.5 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
+        <div className="flex items-center gap-1.5 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0 font-mono">
           <button
             type="button"
             onClick={() => setStatusFilter('ALL')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+            className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
               statusFilter === 'ALL'
-                ? 'bg-blue-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200 bg-slate-900/60'
+                ? 'bg-canvas-raised text-white shadow-tactile border border-slate-700'
+                : 'text-slate-400 hover:text-slate-200 bg-canvas-subtle'
             }`}
           >
             All ({instCredentials.length})
@@ -84,10 +84,10 @@ export default function Credentials() {
           <button
             type="button"
             onClick={() => setStatusFilter(CREDENTIAL_STATUS.VALID)}
-            className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+            className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
               statusFilter === CREDENTIAL_STATUS.VALID
-                ? 'bg-emerald-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200 bg-slate-900/60'
+                ? 'bg-emerald-600 text-white shadow-tactile border border-emerald-500'
+                : 'text-slate-400 hover:text-slate-200 bg-canvas-subtle'
             }`}
           >
             Valid ({instCredentials.filter((c) => c.status === CREDENTIAL_STATUS.VALID).length})
@@ -96,10 +96,10 @@ export default function Credentials() {
           <button
             type="button"
             onClick={() => setStatusFilter(CREDENTIAL_STATUS.REVOKED)}
-            className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+            className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
               statusFilter === CREDENTIAL_STATUS.REVOKED
-                ? 'bg-amber-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200 bg-slate-900/60'
+                ? 'bg-amber-600 text-white shadow-tactile border border-amber-500'
+                : 'text-slate-400 hover:text-slate-200 bg-canvas-subtle'
             }`}
           >
             Revoked ({instCredentials.filter((c) => c.status === CREDENTIAL_STATUS.REVOKED).length})
@@ -110,9 +110,9 @@ export default function Credentials() {
 
       {/* Credentials Grid */}
       {filteredCredentials.length === 0 ? (
-        <div className="p-12 text-center rounded-3xl glass-panel border border-slate-800 space-y-3">
-          <Award className="w-12 h-12 text-slate-500 mx-auto" />
-          <h3 className="text-base font-bold text-slate-200">No matching credentials found</h3>
+        <div className="p-12 text-center rounded-3xl bg-canvas-panel border border-slate-800 space-y-3 shadow-tactile">
+          <Award className="w-10 h-10 text-slate-500 mx-auto" />
+          <h3 className="text-sm font-bold text-slate-200">No matching credentials found</h3>
           <p className="text-xs text-slate-400 max-w-sm mx-auto">
             Try adjusting your search keywords or filter criteria.
           </p>

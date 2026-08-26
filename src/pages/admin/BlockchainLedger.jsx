@@ -41,11 +41,11 @@ export default function BlockchainLedger() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-            <Layers className="w-6 h-6 text-indigo-400" />
+          <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+            <Layers className="w-6 h-6 text-primary-400" />
             Blockchain Ledger & Block Explorer
           </h1>
-          <p className="text-xs text-slate-400 mt-0.5">
+          <p className="text-xs text-slate-400 mt-0.5 font-mono">
             Cryptographic SHA-256 hash-chain with Proof of Authority consensus • {blockchain.length} Blocks Minted
           </p>
         </div>
@@ -66,10 +66,10 @@ export default function BlockchainLedger() {
       {/* Audit Result Banner */}
       {auditResult && (
         <div
-          className={`p-4 rounded-2xl border text-xs font-mono flex items-center justify-between animate-in fade-in ${
+          className={`p-4 rounded-2xl border text-xs font-mono flex items-center justify-between animate-in fade-in shadow-tactile ${
             auditResult.isValid
-              ? 'bg-emerald-950/50 border-emerald-500/40 text-emerald-300'
-              : 'bg-rose-950/50 border-rose-500/40 text-rose-300'
+              ? 'bg-canvas-panel border-emerald-500/40 text-emerald-300'
+              : 'bg-canvas-panel border-rose-500/40 text-rose-300'
           }`}
         >
           <div className="flex items-center gap-2.5">
@@ -95,7 +95,7 @@ export default function BlockchainLedger() {
           <button
             type="button"
             onClick={() => setAuditResult(null)}
-            className="text-slate-400 hover:text-white"
+            className="text-slate-400 hover:text-white cursor-pointer"
           >
             ✕
           </button>
@@ -118,12 +118,12 @@ export default function BlockchainLedger() {
                 
                 {/* Block Card */}
                 <div
-                  className={`w-full p-5 sm:p-6 rounded-3xl glass-panel border transition-all duration-200 hover:border-indigo-500/50 space-y-4 ${
+                  className={`w-full p-5 sm:p-6 rounded-3xl bg-canvas-panel border transition-all duration-200 hover:border-primary-500/50 space-y-4 shadow-tactile ${
                     isGenesis
-                      ? 'border-blue-500/30 bg-blue-950/10'
+                      ? 'border-primary-500/30'
                       : isRevocation
                       ? 'border-amber-500/30 bg-amber-950/10'
-                      : 'border-slate-800 hover:bg-slate-900/60'
+                      : 'border-slate-800 hover:bg-canvas-raised'
                   }`}
                 >
                   {/* Block Header row */}
@@ -132,10 +132,10 @@ export default function BlockchainLedger() {
                       <div
                         className={`w-9 h-9 rounded-xl flex items-center justify-center font-mono font-bold text-xs ${
                           isGenesis
-                            ? 'bg-blue-600/20 text-blue-400 border border-blue-500/30'
+                            ? 'bg-primary-600/20 text-primary-300 border border-primary-500/30'
                             : isRevocation
                             ? 'bg-amber-600/20 text-amber-400 border border-amber-500/30'
-                            : 'bg-indigo-600/20 text-indigo-400 border border-indigo-500/30'
+                            : 'bg-primary-600/20 text-primary-300 border border-primary-500/30'
                         }`}
                       >
                         #{block.index}
@@ -149,10 +149,10 @@ export default function BlockchainLedger() {
                           <span
                             className={`text-[9px] font-mono uppercase px-2 py-0.5 rounded font-semibold ${
                               isGenesis
-                                ? 'bg-blue-500/20 text-blue-300'
+                                ? 'bg-primary-500/20 text-primary-300 border border-primary-500/30'
                                 : isRevocation
-                                ? 'bg-amber-500/20 text-amber-300'
-                                : 'bg-emerald-500/20 text-emerald-300'
+                                ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                                : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
                             }`}
                           >
                             {block.status || 'CONFIRMED'}
@@ -192,7 +192,7 @@ export default function BlockchainLedger() {
                         label="Payload Merkle Root / Data Hash"
                         truncate={true}
                       />
-                      <div className="flex items-center justify-between p-2 rounded-xl bg-slate-900/80 border border-slate-800 text-[11px]">
+                      <div className="flex items-center justify-between p-2.5 rounded-xl bg-canvas-subtle border border-slate-800 text-[11px]">
                         <span className="text-slate-500">Validator & Nonce:</span>
                         <span className="text-slate-300">
                           {block.validatorNode || 'node-auth-01'} • <span className="text-amber-400">Nonce: {block.nonce}</span>
@@ -220,12 +220,12 @@ export default function BlockchainLedger() {
 
                 {/* Chain Link Pointer Arrow */}
                 {idx < blockchain.length - 1 && (
-                  <div className="flex flex-col items-center py-2 text-indigo-400">
-                    <div className="w-0.5 h-4 bg-indigo-500/50" />
-                    <div className="p-1 rounded-full bg-slate-900 border border-indigo-500/40">
-                      <LinkIcon className="w-3.5 h-3.5 text-indigo-400 animate-pulse" />
+                  <div className="flex flex-col items-center py-2 text-primary-400">
+                    <div className="w-0.5 h-4 bg-primary-500/50" />
+                    <div className="p-1 rounded-full bg-canvas-panel border border-primary-500/40 shadow-tactile">
+                      <LinkIcon className="w-3.5 h-3.5 text-primary-400 animate-pulse" />
                     </div>
-                    <div className="w-0.5 h-4 bg-indigo-500/50" />
+                    <div className="w-0.5 h-4 bg-primary-500/50" />
                   </div>
                 )}
 
@@ -245,7 +245,7 @@ export default function BlockchainLedger() {
           maxWidth="max-w-2xl"
         >
           <div className="space-y-4 text-xs font-mono">
-            <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 text-emerald-400 overflow-x-auto max-h-96">
+            <div className="bg-canvas-subtle p-4 rounded-xl border border-slate-800 text-emerald-400 overflow-x-auto max-h-96">
               <pre>{JSON.stringify(selectedBlock, null, 2)}</pre>
             </div>
 
@@ -261,3 +261,4 @@ export default function BlockchainLedger() {
     </div>
   );
 }
+

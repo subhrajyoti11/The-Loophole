@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ShieldCheck, Award, AlertOctagon, Printer, QrCode as QrIcon, ExternalLink, Code, Layers, FileCheck2 } from 'lucide-react';
 import { useCredentials } from '../../context/CredentialContext';
 import { useAuth } from '../../context/AuthContext';
+import { useToast } from '../../context/ToastContext';
 import CredentialPreview from '../../components/credential/CredentialPreview';
 import StatusBadge from '../../components/common/StatusBadge';
 import HashDisplay from '../../components/verification/HashDisplay';
@@ -15,6 +16,7 @@ export default function CredentialDetails() {
   const { id } = useParams();
   const { credentials, blockchain, revokeCredential } = useCredentials();
   const { institution } = useAuth();
+  const { addToast } = useToast();
   const navigate = useNavigate();
 
   const [showRevokeModal, setShowRevokeModal] = useState(false);
@@ -30,9 +32,9 @@ export default function CredentialDetails() {
 
   if (!credential) {
     return (
-      <div className="p-12 text-center space-y-4">
-        <h2 className="text-xl font-bold text-white">Credential Not Found</h2>
-        <p className="text-xs text-slate-400">The requested credential ID does not exist.</p>
+      <div className="p-12 text-center space-y-4 bg-canvas-panel rounded-3xl border border-slate-800 shadow-tactile">
+        <h2 className="text-xl font-bold text-white tracking-tight">Credential Not Found</h2>
+        <p className="text-xs text-slate-400">The requested credential ID does not exist on the current ledger.</p>
         <Link to="/institution/credentials">
           <Button variant="secondary" size="sm">Back to Credentials</Button>
         </Link>
@@ -47,9 +49,9 @@ export default function CredentialDetails() {
     try {
       await revokeCredential(credential.id, revokeReason, institution);
       setShowRevokeModal(false);
-      alert('Credential successfully marked as REVOKED and revocation block minted to blockchain!');
+      addToast('Credential successfully marked as REVOKED and sealed on-chain!', 'success');
     } catch (err) {
-      alert('Failed to revoke: ' + err.message);
+      addToast('Failed to revoke: ' + err.message, 'error');
     } finally {
       setIsRevoking(false);
     }
@@ -67,11 +69,11 @@ export default function CredentialDetails() {
             to="/institution/credentials"
             className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 transition-colors mb-1"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-3.5 h-3.5" />
             <span>Back to Issued Credentials</span>
           </Link>
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-bold text-white">{credential.studentName}</h1>
+            <h1 className="text-2xl font-bold text-white tracking-tight">{credential.studentName}</h1>
             <StatusBadge status={credential.status} size="md" />
           </div>
         </div>
@@ -107,8 +109,8 @@ export default function CredentialDetails() {
 
       {/* Revocation notice if revoked */}
       {isRevoked && (
-        <div className="p-4 rounded-2xl bg-amber-950/40 border border-amber-500/40 space-y-1">
-          <p className="text-xs font-bold text-amber-300 uppercase tracking-wider flex items-center gap-2">
+        <div className="p-4 rounded-2xl bg-amber-950/40 border border-amber-500/40 space-y-1 shadow-tactile">
+          <p className="text-xs font-bold text-amber-300 uppercase tracking-wider font-mono flex items-center gap-2">
             <AlertOctagon className="w-4 h-4 text-amber-400" />
             This credential has been officially REVOKED
           </p>
@@ -125,10 +127,10 @@ export default function CredentialDetails() {
       <CredentialPreview credential={credential} showActions={true} />
 
       {/* On-Chain Cryptographic Receipt */}
-      <div className="p-6 rounded-2xl glass-panel border border-slate-800 space-y-4">
+      <div className="p-6 rounded-2xl bg-canvas-panel border border-slate-800 space-y-4 shadow-tactile">
         <div className="flex items-center justify-between pb-2 border-b border-slate-800">
           <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider font-mono flex items-center gap-2">
-            <Layers className="w-4 h-4 text-blue-400" />
+            <Layers className="w-4 h-4 text-primary-400" />
             On-Chain Block Metadata
           </h3>
           <span className="text-[10px] font-mono text-emerald-400">PoA Consensus Verified</span>
@@ -190,7 +192,7 @@ export default function CredentialDetails() {
               value={revokeReason}
               onChange={(e) => setRevokeReason(e.target.value)}
               placeholder="e.g. Fabrication of prerequisite transfer credits or academic disciplinary committee finding..."
-              className="w-full px-3.5 py-2.5 rounded-xl glass-input text-xs text-slate-100 placeholder:text-slate-500 focus:outline-none"
+              className="w-full px-3.5 py-2.5 rounded-xl tactile-input text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none"
             />
           </div>
 
@@ -223,7 +225,7 @@ export default function CredentialDetails() {
         subtitle="Exact object payload hashed for cryptographic proof"
         maxWidth="max-w-xl"
       >
-        <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 text-xs font-mono text-emerald-400 overflow-x-auto max-h-96">
+        <div className="bg-canvas-subtle p-4 rounded-xl border border-slate-800 text-xs font-mono text-emerald-400 overflow-x-auto max-h-96">
           <pre>{JSON.stringify(credential, null, 2)}</pre>
         </div>
       </Modal>
@@ -231,3 +233,4 @@ export default function CredentialDetails() {
     </div>
   );
 }
+

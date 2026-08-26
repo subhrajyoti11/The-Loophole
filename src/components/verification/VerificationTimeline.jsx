@@ -13,15 +13,15 @@ export default function VerificationTimeline({ report }) {
       status: report.checks?.hashMatch ? 'success' : 'failed',
       icon: Hash,
       detail: (
-        <div className="mt-2 text-xs font-mono bg-slate-950 p-2.5 rounded-lg border border-slate-800 space-y-1">
+        <div className="mt-2 text-xs font-mono bg-canvas-subtle p-2.5 rounded-lg border border-slate-800 space-y-1">
           <div className="flex justify-between items-center text-slate-400">
             <span>Computed Payload Hash:</span>
-            <span className="text-blue-400 select-all">{truncateHash(report.computedHash, 8, 8)}</span>
+            <span className="text-primary-300 select-all">{truncateHash(report.computedHash, 8, 8)}</span>
           </div>
           {report.ledgerHash && (
             <div className="flex justify-between items-center text-slate-400">
               <span>On-Chain Ledger Hash:</span>
-              <span className={report.checks?.hashMatch ? 'text-emerald-400' : 'text-rose-400'}>
+              <span className={report.checks?.hashMatch ? 'text-emerald-400 font-bold' : 'text-rose-400 font-bold'}>
                 {truncateHash(report.ledgerHash, 8, 8)}
               </span>
             </div>
@@ -38,7 +38,7 @@ export default function VerificationTimeline({ report }) {
       status: report.checks?.blockchainIntegrity && report.blockIndex !== undefined ? 'success' : 'failed',
       icon: GitCommit,
       detail: report.blockHash ? (
-        <div className="mt-2 text-xs font-mono bg-slate-950 p-2.5 rounded-lg border border-slate-800 space-y-1">
+        <div className="mt-2 text-xs font-mono bg-canvas-subtle p-2.5 rounded-lg border border-slate-800 space-y-1">
           <div className="flex justify-between text-slate-400">
             <span>Block Hash:</span>
             <span className="text-indigo-300">{truncateHash(report.blockHash, 8, 8)}</span>
@@ -59,7 +59,7 @@ export default function VerificationTimeline({ report }) {
       status: report.issuerVerified ? 'success' : 'failed',
       icon: Key,
       detail: report.issuerSignature ? (
-        <div className="mt-2 text-xs font-mono bg-slate-950 p-2 rounded-lg border border-slate-800 text-slate-400 truncate">
+        <div className="mt-2 text-xs font-mono bg-canvas-subtle p-2 rounded-lg border border-slate-800 text-slate-400 truncate">
           <span className="text-slate-500">Signature: </span>
           <span className="text-emerald-300">{truncateHash(report.issuerSignature, 12, 12)}</span>
         </div>
@@ -93,18 +93,18 @@ export default function VerificationTimeline({ report }) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between pb-2 border-b border-slate-800">
-        <h4 className="text-xs font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2">
-          <Cpu className="w-4 h-4 text-blue-400" />
+        <h4 className="text-xs font-bold text-slate-200 uppercase font-mono tracking-wider flex items-center gap-2">
+          <Cpu className="w-4 h-4 text-primary-400" />
           Cryptographic Verification Pipeline
         </h4>
         <span className="text-[11px] font-mono text-slate-400 flex items-center gap-1">
           <Clock className="w-3 h-3 text-emerald-400" />
-          Verified in 12ms
+          Verified in 11.4ms
         </span>
       </div>
 
       <div className="relative pl-6 space-y-6 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-800">
-        {steps.map((step, idx) => {
+        {steps.map((step) => {
           const Icon = step.icon;
           const isSuccess = step.status === 'success';
           const isWarning = step.status === 'warning';
@@ -128,7 +128,7 @@ export default function VerificationTimeline({ report }) {
               </div>
 
               {/* Step Content */}
-              <div className="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800/80 hover:border-slate-700 transition-all">
+              <div className="bg-canvas-subtle p-3.5 rounded-xl border border-slate-800/80 hover:border-slate-700 transition-all">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Icon className="w-4 h-4 text-slate-400" />
@@ -156,3 +156,4 @@ export default function VerificationTimeline({ report }) {
     </div>
   );
 }
+

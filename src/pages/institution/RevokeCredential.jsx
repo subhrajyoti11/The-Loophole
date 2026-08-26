@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { AlertOctagon, ShieldAlert, CheckCircle2, Search, ArrowRight, AlertTriangle, Layers } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useCredentials } from '../../context/CredentialContext';
+import { useToast } from '../../context/ToastContext';
 import Button from '../../components/common/Button';
 import Modal from '../../components/common/Modal';
 import StatusBadge from '../../components/common/StatusBadge';
@@ -10,12 +11,12 @@ import { CREDENTIAL_STATUS } from '../../utils/constants';
 export default function RevokeCredential() {
   const { institution } = useAuth();
   const { credentials, revokeCredential } = useCredentials();
+  const { addToast } = useToast();
 
   const [selectedCred, setSelectedCred] = useState(null);
   const [reason, setReason] = useState('');
   const [search, setSearch] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
-  const [successNotice, setSuccessNotice] = useState(null);
 
   // Active credentials eligible for revocation
   const activeCredentials = credentials.filter(
@@ -35,11 +36,11 @@ export default function RevokeCredential() {
     setIsProcessing(true);
     try {
       const result = await revokeCredential(selectedCred.id, reason, institution);
-      setSuccessNotice(`Successfully revoked ${selectedCred.studentName}'s credential. Block #${result.block.index} minted.`);
+      addToast(`Credential revoked successfully. Block #${result.block.index} minted.`, 'success');
       setSelectedCred(null);
       setReason('');
     } catch (err) {
-      alert('Revocation failed: ' + err.message);
+      addToast('Revocation failed: ' + err.message, 'error');
     } finally {
       setIsProcessing(false);
     }
@@ -57,8 +58,8 @@ export default function RevokeCredential() {
       
       {/* Header */}
       <div className="space-y-1">
-        <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-          <AlertOctagon className="w-6 h-6 text-amber-400" />
+        <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+          <AlertOctagon className="w-5 h-5 text-amber-400" />
           Revoke / Suspend Academic Credentials
         </h1>
         <p className="text-xs text-slate-400">
@@ -66,44 +67,27 @@ export default function RevokeCredential() {
         </p>
       </div>
 
-      {/* Success Notification Banner */}
-      {successNotice && (
-        <div className="p-4 rounded-2xl bg-emerald-950/60 border border-emerald-500/40 text-xs text-emerald-300 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-            <span>{successNotice}</span>
-          </div>
-          <button
-            type="button"
-            onClick={() => setSuccessNotice(null)}
-            className="text-slate-400 hover:text-white"
-          >
-            ✕
-          </button>
-        </div>
-      )}
-
       {/* Info Card explaining Revocation Blockchain Architecture */}
-      <div className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 text-xs space-y-2">
-        <h3 className="font-bold text-slate-200 flex items-center gap-2">
-          <Layers className="w-4 h-4 text-blue-400" />
-          How Immutability & Revocation Work in Blockchain
+      <div className="p-5 rounded-2xl bg-canvas-panel border border-slate-800 text-xs space-y-2 shadow-tactile">
+        <h3 className="font-bold text-slate-200 flex items-center gap-2 font-mono text-xs uppercase">
+          <Layers className="w-4 h-4 text-primary-400" />
+          Immutability & Revocation Architecture
         </h3>
         <p className="text-slate-400 leading-relaxed text-[11px]">
-          In a true blockchain, past blocks cannot be erased or deleted. Instead, the institution signs a <span className="font-mono text-amber-300">REVOKE_CREDENTIAL</span> transaction that is appended as a brand new block. When public verifiers query the hash, the verification engine detects the latest revocation block and displays the official revocation notice.
+          In a true cryptographic ledger, past blocks cannot be deleted or rewritten. Instead, the accredited institution signs a <span className="font-mono text-amber-300">REVOCATION_RECEIPT</span> payload that is appended as a brand new block. When third parties scan the credential, the consensus validator detects the revocation record and displays the official revocation notice.
         </p>
       </div>
 
       {/* Search Bar */}
-      <div className="p-4 rounded-2xl glass-panel border border-slate-800">
+      <div className="p-4 rounded-2xl bg-canvas-panel border border-slate-800 shadow-tactile">
         <div className="relative">
           <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search candidate name, ID, or certificate number to revoke..."
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl glass-input text-xs text-slate-100 placeholder:text-slate-500 focus:outline-none"
+            placeholder="Search candidate name, roll no, or certificate ID to revoke..."
+            className="w-full pl-10 pr-4 py-2.5 rounded-xl tactile-input text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none font-mono"
           />
         </div>
       </div>
@@ -115,7 +99,7 @@ export default function RevokeCredential() {
         </h3>
 
         {filtered.length === 0 ? (
-          <div className="p-8 text-center rounded-2xl glass-panel border border-slate-800 text-xs text-slate-400">
+          <div className="p-8 text-center rounded-2xl bg-canvas-panel border border-slate-800 text-xs text-slate-400 shadow-tactile">
             No active credentials match the query.
           </div>
         ) : (
@@ -123,12 +107,12 @@ export default function RevokeCredential() {
             {filtered.map((cred) => (
               <div
                 key={cred.id}
-                className="p-4 rounded-2xl glass-panel border border-slate-800 hover:border-slate-700 flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-all"
+                className="p-4 rounded-2xl bg-canvas-panel border border-slate-800 hover:border-slate-700 flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-all shadow-tactile"
               >
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-bold text-slate-100">{cred.studentName}</span>
-                    <span className="text-[10px] font-mono text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded">
+                    <span className="text-[10px] font-mono text-primary-300 bg-primary-500/10 px-2 py-0.5 rounded border border-primary-500/20">
                       {cred.studentId}
                     </span>
                   </div>
@@ -176,7 +160,7 @@ export default function RevokeCredential() {
                     key={i}
                     type="button"
                     onClick={() => setReason(r)}
-                    className="w-full text-left text-[11px] p-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition-colors"
+                    className="w-full text-left text-[11px] p-2 rounded-lg bg-canvas-subtle hover:bg-canvas-raised text-slate-300 border border-slate-800 transition-colors cursor-pointer"
                   >
                     • {r}
                   </button>
@@ -194,7 +178,7 @@ export default function RevokeCredential() {
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
                 placeholder="Enter detailed reason / disciplinary committee case number..."
-                className="w-full px-3.5 py-2.5 rounded-xl glass-input text-xs text-slate-100 placeholder:text-slate-500 focus:outline-none"
+                className="w-full px-3.5 py-2.5 rounded-xl tactile-input text-xs text-slate-100 placeholder:text-slate-600 focus:outline-none"
               />
             </div>
 
@@ -223,3 +207,4 @@ export default function RevokeCredential() {
     </div>
   );
 }
+

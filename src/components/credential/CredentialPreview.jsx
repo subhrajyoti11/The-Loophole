@@ -1,9 +1,10 @@
-import React, { useRef } from 'react';
-import { ShieldCheck, Award, Printer, Download, ExternalLink, CheckCircle } from 'lucide-react';
+import React, { useRef, useState } from 'react';
+import { ShieldCheck, Award, Printer, Download, ExternalLink, CheckCircle, Sun, Moon, FileCheck, Key } from 'lucide-react';
 import QRCode from '../verification/QRCode';
 import { truncateHash } from '../../utils/generateHash';
 import StatusBadge from '../common/StatusBadge';
 import Button from '../common/Button';
+import { useToast } from '../../context/ToastContext';
 
 export default function CredentialPreview({
   credential,
@@ -11,6 +12,8 @@ export default function CredentialPreview({
   className = '',
 }) {
   const certificateRef = useRef(null);
+  const [viewMode, setViewMode] = useState('dark'); // 'dark' (high-tech security) or 'parchment' (classic ivory paper)
+  const { addToast } = useToast();
 
   if (!credential) return null;
 
@@ -20,88 +23,123 @@ export default function CredentialPreview({
 
   const verificationUrl = `${window.location.origin}/verify/${credential.hash || credential.id}`;
 
+  const isParchment = viewMode === 'parchment';
+
   return (
     <div className={`flex flex-col gap-4 ${className}`}>
+      
       {/* Certificate Frame Container */}
       <div
         ref={certificateRef}
-        className="printable-certificate relative rounded-3xl p-6 sm:p-10 bg-[#090d16] border-2 border-amber-500/50 shadow-xl overflow-hidden"
+        className={`printable-certificate relative rounded-3xl p-4 sm:p-8 transition-all duration-300 overflow-hidden select-none ${
+          isParchment
+            ? 'certificate-parchment'
+            : 'certificate-dark'
+        }`}
       >
-        {/* Decorative corner ornaments */}
-        <div className="absolute top-3 left-3 w-6 h-6 border-t-2 border-l-2 border-amber-400" />
-        <div className="absolute top-3 right-3 w-6 h-6 border-t-2 border-r-2 border-amber-400" />
-        <div className="absolute bottom-3 left-3 w-6 h-6 border-b-2 border-l-2 border-amber-400" />
-        <div className="absolute bottom-3 right-3 w-6 h-6 border-b-2 border-r-2 border-amber-400" />
+        {/* Guilloche Micro-Security Border Overlay */}
+        <div className="absolute inset-2 sm:inset-3 rounded-2xl guilloche-border pointer-events-none opacity-40" />
 
-        {/* Inner Border */}
-        <div className="rounded-2xl p-6 sm:p-8 flex flex-col justify-between h-full border border-amber-500/30 bg-[#0c1222]">
-          
+        {/* Security Watermark Background */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03]">
+          <Award className="w-96 h-96 text-amber-500" />
+        </div>
+
+        {/* Inner Certificate Container */}
+        <div
+          className={`relative rounded-xl p-5 sm:p-8 flex flex-col justify-between h-full border ${
+            isParchment
+              ? 'border-amber-800/40 bg-amber-50/20'
+              : 'border-amber-500/30 bg-[#070b14]/90'
+          }`}
+        >
+          {/* Top Microprint Security String */}
+          <div className="flex items-center justify-between pb-3 border-b border-amber-500/20 text-[9px] font-mono uppercase tracking-widest text-amber-500/70">
+            <span>OFFICIAL NATIONAL ACADEMIC RECORD • IMMUTABLE LEDGER BLOCK</span>
+            <span className="hidden sm:inline">SHA-256 HASH VERIFIED • ZERO-KNOWLEDGE PROOF COMPLIANT</span>
+          </div>
+
           {/* Header Seal & University Title */}
-          <div className="text-center space-y-3 pb-6 border-b border-amber-500/20 relative">
+          <div className="text-center space-y-3 py-4 relative">
+            {/* Gold Crest Foil Seal */}
             <div className="flex justify-center">
-              <div className="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-400/40 flex items-center justify-center p-2 text-amber-400">
-                <Award className="w-8 h-8" />
+              <div className="relative">
+                <div className="w-16 h-16 rounded-full gold-foil-bg p-0.5 shadow-lg flex items-center justify-center">
+                  <div className={`w-full h-full rounded-full flex items-center justify-center p-2 ${isParchment ? 'bg-[#fcfbfa]' : 'bg-[#090e18]'}`}>
+                    <Award className="w-8 h-8 text-amber-500" />
+                  </div>
+                </div>
+                <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full hologram-seal flex items-center justify-center shadow-md">
+                  <ShieldCheck className="w-3 h-3 text-white" />
+                </div>
               </div>
             </div>
 
             <div>
-              <h2 className="font-serif text-xl sm:text-2xl font-bold tracking-wider text-amber-300 uppercase">
+              <h2 className={`font-serif text-xl sm:text-2xl font-bold tracking-wider uppercase ${isParchment ? 'text-amber-950 font-bold' : 'gold-foil'}`}>
                 {credential.institutionName || 'National Institute of Technology Rourkela'}
               </h2>
-              <p className="text-[11px] font-mono text-slate-400 tracking-widest uppercase mt-1">
+              <p className={`text-[11px] font-mono tracking-widest uppercase mt-0.5 ${isParchment ? 'text-slate-600' : 'text-slate-400'}`}>
                 An Institute of National Importance • Ministry of Education, Government of India
               </p>
             </div>
           </div>
 
           {/* Certificate Main Body */}
-          <div className="text-center my-6 space-y-3">
-            <p className="font-serif italic text-slate-400 text-sm">This is to certify that</p>
+          <div className="text-center my-4 sm:my-6 space-y-3">
+            <p className={`font-serif italic text-sm ${isParchment ? 'text-stone-600' : 'text-slate-400'}`}>
+              By the authority of the Board of Governors & the Senate, be it known that
+            </p>
             
-            <h1 className="font-serif text-2xl sm:text-3xl font-bold text-white tracking-wide underline decoration-amber-500/40 underline-offset-8">
+            <h1 className={`font-serif text-2xl sm:text-4xl font-bold tracking-wide ${isParchment ? 'text-stone-900' : 'text-white'}`}>
               {credential.studentName}
             </h1>
 
-            <p className="font-mono text-xs text-blue-400 font-semibold tracking-wider">
-              Student ID / Roll No: {credential.studentId}
-            </p>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-primary-500/10 border border-primary-500/30 text-primary-300 font-mono text-xs">
+              <span>Roll No / Student ID:</span>
+              <span className="font-bold text-white">{credential.studentId}</span>
+            </div>
 
-            <p className="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto leading-relaxed pt-1">
-              has successfully fulfilled all academic curriculum requirements and examinations prescribed by the Senate and is hereby conferred the degree of
+            <p className={`text-xs sm:text-sm max-w-xl mx-auto leading-relaxed pt-1 ${isParchment ? 'text-stone-700' : 'text-slate-300'}`}>
+              has satisfactorily completed the prescribed curriculum and passed the approved examinations, and is admitted to the degree of
             </p>
 
             <div className="py-2">
-              <h3 className="text-lg sm:text-xl font-bold text-amber-200 font-serif">
+              <h3 className={`text-xl sm:text-2xl font-bold font-serif ${isParchment ? 'text-amber-900' : 'text-amber-300'}`}>
                 {credential.degree}
               </h3>
               {credential.major && (
-                <p className="text-xs text-slate-300 font-medium mt-1">
-                  with Specialization in <span className="text-white font-semibold">{credential.major}</span>
+                <p className={`text-xs sm:text-sm font-medium mt-1 ${isParchment ? 'text-stone-800' : 'text-slate-200'}`}>
+                  in <span className="font-semibold">{credential.major}</span>
                 </p>
               )}
             </div>
 
-            {/* Performance Grade / CGPA */}
-            <div className="inline-flex items-center gap-4 px-4 py-2 rounded-xl bg-slate-900 border border-slate-800">
+            {/* Academic Classification Badge */}
+            <div className={`inline-flex items-center gap-4 px-4 py-2 rounded-xl border ${
+              isParchment ? 'bg-amber-100/50 border-amber-300/80 text-stone-800' : 'bg-slate-900/90 border-slate-800 text-slate-200'
+            }`}>
               <div className="text-left">
-                <span className="text-[10px] text-slate-400 uppercase font-mono block">Cumulative GPA</span>
-                <span className="text-sm font-bold text-emerald-400 font-mono">{credential.cgpa} / 10.0</span>
+                <span className="text-[10px] uppercase font-mono text-slate-500 block">Cumulative GPA</span>
+                <span className={`text-sm font-bold font-mono ${isParchment ? 'text-emerald-800' : 'text-emerald-400'}`}>
+                  {credential.cgpa} / 10.0
+                </span>
               </div>
-              <div className="h-5 w-px bg-slate-800" />
+              <div className="h-5 w-px bg-slate-700/50" />
               <div className="text-left">
-                <span className="text-[10px] text-slate-400 uppercase font-mono block">Academic Classification</span>
-                <span className="text-xs font-semibold text-slate-200">{credential.grade || 'First Class Honours'}</span>
+                <span className="text-[10px] uppercase font-mono text-slate-500 block">Academic Honour</span>
+                <span className="text-xs font-semibold">{credential.grade || 'First Class with Distinction'}</span>
               </div>
             </div>
           </div>
 
-          {/* Footer with Signatures, QR Code & Blockchain Hash */}
+          {/* Footer: Date, Live QR Code, Signatures */}
           <div className="pt-6 border-t border-amber-500/20 grid grid-cols-1 sm:grid-cols-3 items-center gap-4 text-center sm:text-left">
             
             {/* Left: Date & Status */}
             <div className="space-y-1">
-              <p className="text-[10px] uppercase font-mono text-slate-400">Date of Conferment</p>
-              <p className="text-xs font-bold text-slate-200 font-mono">
+              <p className="text-[10px] uppercase font-mono text-slate-500">Date of Conferment</p>
+              <p className={`text-xs font-bold font-mono ${isParchment ? 'text-stone-900' : 'text-slate-200'}`}>
                 {credential.issueDate ? new Date(credential.issueDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : 'June 15, 2025'}
               </p>
               <div className="pt-1">
@@ -111,52 +149,62 @@ export default function CredentialPreview({
 
             {/* Center: Live Verifiable QR Code */}
             <div className="flex flex-col items-center justify-center">
-              <QRCode
-                value={verificationUrl}
-                size={88}
-                showDownload={false}
-              />
-              <span className="text-[9px] font-mono text-slate-400 mt-1 uppercase tracking-tight">
+              <div className={`p-2 rounded-xl border shadow-sm ${isParchment ? 'bg-white border-amber-300' : 'bg-white border-slate-700'}`}>
+                <QRCode
+                  value={verificationUrl}
+                  size={84}
+                  showDownload={false}
+                />
+              </div>
+              <span className="text-[9px] font-mono text-slate-500 mt-1 uppercase tracking-tight">
                 Scan with camera to verify
               </span>
             </div>
 
             {/* Right: Digital Signature & Registrar */}
             <div className="text-center sm:text-right space-y-1">
-              <div className="inline-block border-b border-slate-600 pb-1 px-3">
-                <p className="font-serif italic text-sm text-amber-300/90">Prof. Rohan K. Sen</p>
+              <div className="inline-block border-b border-slate-600/80 pb-1 px-4">
+                <p className={`font-serif italic text-base ${isParchment ? 'text-amber-900' : 'text-amber-300/90'}`}>
+                  Prof. Rohan K. Sen
+                </p>
               </div>
-              <p className="text-[10px] uppercase font-mono text-slate-400">Registrar & Controller of Exams</p>
+              <p className="text-[10px] uppercase font-mono text-slate-500">Registrar & Controller of Exams</p>
               <p className="text-[9px] font-mono text-slate-500 truncate">
-                Key: {truncateHash(credential.issuerPublicKey || credential.issuerSignature, 6, 6)}
+                Signer: {truncateHash(credential.issuerPublicKey || credential.issuerSignature, 6, 6)}
               </p>
             </div>
 
           </div>
 
           {/* Bottom SHA-256 Ledger Stamp */}
-          <div className="mt-4 pt-3 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between text-[10px] font-mono text-slate-400 gap-2">
+          <div className="mt-4 pt-3 border-t border-amber-500/10 flex flex-col sm:flex-row items-center justify-between text-[10px] font-mono text-slate-500 gap-2">
             <div className="flex items-center gap-1.5">
-              <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
+              <ShieldCheck className="w-3.5 h-3.5 text-primary-400" />
               <span>Immutable Ledger Stamp:</span>
-              <span className="text-blue-300 font-bold select-all">
+              <span className={`font-bold select-all ${isParchment ? 'text-stone-800' : 'text-primary-300'}`}>
                 {truncateHash(credential.hash, 10, 10)}
               </span>
             </div>
-            <div className="text-slate-500">
-              Certificate ID: {credential.id}
+            <div>
+              Certificate ID: <span className="font-semibold">{credential.id}</span>
             </div>
           </div>
 
         </div>
       </div>
 
-      {/* Action Bar (Print / Direct Link) */}
+      {/* Action Bar (Print / Direct Link / Parchment Mode Toggle) */}
       {showActions && (
-        <div className="flex flex-wrap items-center justify-between gap-3 p-3 rounded-2xl glass-panel border border-slate-800 no-print">
-          <div className="text-xs text-slate-400 flex items-center gap-2">
-            <CheckCircle className="w-4 h-4 text-emerald-400" />
-            <span>Tamper-proof hash permanently stored on PoA Blockchain block.</span>
+        <div className="flex flex-wrap items-center justify-between gap-3 p-3 rounded-2xl bg-canvas-card border border-slate-800/90 no-print shadow-tactile">
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setViewMode(isParchment ? 'dark' : 'parchment')}
+              className="px-3 py-1.5 rounded-xl bg-canvas-raised hover:bg-canvas-highlight text-xs font-mono text-slate-300 border border-slate-700/80 flex items-center gap-1.5 transition-all cursor-pointer"
+            >
+              {isParchment ? <Moon className="w-3.5 h-3.5 text-primary-400" /> : <Sun className="w-3.5 h-3.5 text-amber-400" />}
+              <span>{isParchment ? 'Dark Security View' : 'Classic Parchment View'}</span>
+            </button>
           </div>
 
           <div className="flex items-center gap-2">
@@ -174,7 +222,7 @@ export default function CredentialPreview({
               icon={ExternalLink}
               onClick={() => window.open(`/verify/${credential.hash || credential.id}`, '_blank')}
             >
-              Open Public Verification
+              Public Verify URL
             </Button>
           </div>
         </div>
@@ -182,3 +230,4 @@ export default function CredentialPreview({
     </div>
   );
 }
+
